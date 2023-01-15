@@ -20,9 +20,26 @@ pub fn hash_kgrams(code: &[u8], k: usize) -> Vec<u64> {
     hashes
 }
 
-pub fn winnow(hashes: &Vec<u64>, _window_size: usize) -> Vec<usize> {
-    // TODO: actally winnow
-    (0..hashes.len()).collect()
+pub fn winnow(hashes: &Vec<u64>, window_size: usize) -> Vec<usize> {
+    _local_winnow(hashes, window_size)
+}
+
+fn _local_winnow(hashes: &Vec<u64>, window_size: usize) -> Vec<usize> {
+    let mut selected_indices: Vec<usize> = Vec::new();
+    for (idx, window) in hashes.windows(window_size).enumerate() {
+        let mut min_idx = idx;
+        let mut min_hash = u64::MAX;
+        for (i, &h) in window.iter().enumerate() {
+            if h <= min_hash {
+                min_hash = h;
+                min_idx = idx + i;
+            }
+        }
+        selected_indices.push(min_idx);
+    }
+    selected_indices.sort();
+    selected_indices.dedup();
+    selected_indices
 }
 
 pub fn binary_search<T>(t: &T, a: &Vec<T>) -> usize

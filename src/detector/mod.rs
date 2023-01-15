@@ -9,12 +9,24 @@ use tree_sitter::{Parser, Tree};
 
 mod algorithms;
 pub struct DocumentFingerprint {
-    code: String,
+    pub code: String,
     filtered_code: String,
     offsets: Vec<(usize, usize)>,
     k: usize,
     hashes: Vec<u64>,
     selected_indices: Vec<usize>,
+}
+
+impl DocumentFingerprint {
+    fn selected_coverage(&self) -> usize {
+        let mut coverage = vec![0; self.filtered_code.as_bytes().len()];
+        for idx in self.selected_indices.iter() {
+            for j in 0..self.k {
+                coverage[idx + j] = 1;
+            }
+        }
+        coverage.iter().sum()
+    }
 }
 
 pub fn generate_fingerprint(
@@ -48,25 +60,11 @@ pub fn generate_fingerprint(
     }
 }
 
-fn filter_code(tree: &Tree, code: &[u8]) -> (String, Vec<(usize, usize)>) {
-    let mut out_code = String::new();
-    let mut offsets: Vec<(usize, usize)> = vec![(0, 0)];
-
-    for token in tokenize_tree(tree, code) {
-        match token.kind {
-            TokenKind::NameFunction => out_code.push('F'),
-            TokenKind::NameClass => out_code.push('O'),
-            TokenKind::Name => out_code.push('V'),
-            TokenKind::Text => out_code.push_str(token.text),
-        }
-        offsets.push((out_code.len(), token.end_byte));
-    }
-
-    (out_code, offsets)
-}
-
 // Detection algorithm starts
-pub fn compare_fingerprints(fp1: &DocumentFingerprint, fp2: &DocumentFingerprint) {
+pub fn compare_fingerprints(
+    fp1: &DocumentFingerprint,
+    fp2: &DocumentFingerprint,
+) -> (Vec<(usize, usize)>, f32, Vec<(usize, usize)>, f32) {
     assert_eq!(
         fp1.k, fp2.k,
         "Error: Fingerprints must be generated with the same noise threshold!"
@@ -84,22 +82,19 @@ pub fn compare_fingerprints(fp1: &DocumentFingerprint, fp2: &DocumentFingerprint
     let (slices1_begin, slices1_end) = get_copied_slices(&matched_indices1, k);
     let (slices2_begin, slices2_end) = get_copied_slices(&matched_indices2, k);
 
-    println!("Matched code in document 1:");
+    let mut matches1: Vec<(usize, usize)> = Vec::new();
     for (&s, &e) in slices1_begin.iter().zip(slices1_end.iter()) {
         let s_i = binary_search(&(s, 0), &fp1.offsets).min(fp1.offsets.len() - 1);
         let e_i = binary_search(&(e, 0), &fp1.offsets).min(fp1.offsets.len() - 1);
 
         let ns = fp1.offsets[s_i].1;
         let ne = fp1.offsets[e_i].1;
-
-        println!(">>>");
-        println!("{}", &fp1.code[ns..ne]);
-        println!("<<<");
+        matches1.push((ns, ne));
     }
 
-    println!("---------------------------------------");
-    println!("---------------------------------------\n");
-    println!("Matched code in document 2:");
+    let similarity1 = calc_similarity(fp1, &slices1_begin, &slices1_end);
+
+    let mut matches2: Vec<(usize, usize)> = Vec::new();
     for (&s, &e) in slices2_begin.iter().zip(slices2_end.iter()) {
         let s_i = binary_search(&(s, 0), &fp2.offsets).min(fp2.offsets.len() - 1);
         let e_i = binary_search(&(e, 0), &fp2.offsets).min(fp2.offsets.len() - 1);
@@ -107,10 +102,28 @@ pub fn compare_fingerprints(fp1: &DocumentFingerprint, fp2: &DocumentFingerprint
         let ns = fp2.offsets[s_i].1;
         let ne = fp2.offsets[e_i].1;
 
-        println!(">>>");
-        println!("{}", &fp2.code[ns..ne]);
-        println!("<<<");
+        matches2.push((ns, ne));
     }
+    let similarity2 = calc_similarity(fp2, &slices2_begin, &slices2_end);
+
+    (matches1, similarity1, matches2, similarity2)
+}
+
+fn filter_code(tree: &Tree, code: &[u8]) -> (String, Vec<(usize, usize)>) {
+    let mut out_code = String::new();
+    let mut offsets: Vec<(usize, usize)> = vec![(0, 0)];
+
+    for token in tokenize_tree(tree, code) {
+        match token.kind {
+            TokenKind::NameFunction => out_code.push('F'),
+            TokenKind::NameClass => out_code.push('O'),
+            TokenKind::Name => out_code.push('V'),
+            TokenKind::Text => out_code.push_str(token.text),
+        }
+        offsets.push((out_code.len(), token.end_byte));
+    }
+
+    (out_code, offsets)
 }
 
 fn find_matching_hashes(
@@ -134,7 +147,6 @@ fn find_matching_hashes(
             matched_indices2.push(i);
         }
     }
-
     (matched_indices1, matched_indices2)
 }
 
@@ -165,4 +177,57 @@ fn get_copied_slices(idx: &Vec<usize>, k: usize) -> (Vec<usize>, Vec<usize>) {
     slice_ends.push(idx.last().unwrap() + k);
 
     (slice_starts, slice_ends)
+}
+
+fn calc_similarity(
+    fp: &DocumentFingerprint,
+    slice_begins: &Vec<usize>,
+    slice_ends: &Vec<usize>,
+) -> f32 {
+    let selected_code_count = fp.selected_coverage() as f32;
+    let it = slice_begins.iter().zip(slice_ends.iter());
+    let matched_code_count = it.fold(0, |acc, (start, end)| acc + (end - start)) as f32;
+
+    matched_code_count / selected_code_count
+}
+
+// More ergonomic stuff -  a Detector & graphical outputs
+
+#[allow(unused)]
+pub fn html_report(
+    fp1: &DocumentFingerprint,
+    fp2: &DocumentFingerprint,
+    matches1: Vec<(usize, usize)>,
+    matches2: Vec<(usize, usize)>,
+    similarity1: f32,
+    similarity2: f32,
+) {
+    todo!()
+}
+
+pub fn print_report_terminal(
+    fp1: &DocumentFingerprint,
+    fp2: &DocumentFingerprint,
+    matches1: &Vec<(usize, usize)>,
+    matches2: &Vec<(usize, usize)>,
+    similarity1: f32,
+    similarity2: f32,
+) {
+    println!("Similarity rating for file 1: {}", similarity1);
+    println!("Matches found in file 1: ");
+    for &(start, end) in matches1.iter() {
+        println!(">>>");
+        println!("{}", &fp1.code[start..end]);
+        println!("<<<");
+    }
+
+    println!("\n-----------------------------------\n");
+
+    println!("Similarity rating for file 2: {}", similarity2);
+    println!("Matches found in file 1: ");
+    for &(start, end) in matches2.iter() {
+        println!(">>>");
+        println!("{}", &fp2.code[start..end]);
+        println!("<<<");
+    }
 }
