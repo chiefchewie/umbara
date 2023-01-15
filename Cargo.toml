@@ -1,5 +1,5 @@
 [package]
-name = "plaguev2"
+name = "umbara"
 version = "0.1.0"
 edition = "2021"
 
@@ -10,3 +10,4 @@ tree-sitter = "0.20.9"
 
 [build-dependencies]
 cc="*"
+bindgen = "0.63.0"
