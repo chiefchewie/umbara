@@ -1,7 +1,6 @@
+use super::traverse::TreeItem;
 use crate::utils::traverse::traverse;
 use tree_sitter::{Node, Tree};
-
-use super::traverse::TreeItem;
 
 #[derive(Debug)]
 pub struct Token<'a> {
