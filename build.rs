@@ -1,16 +1,25 @@
-use std::path::PathBuf;
+use std::fs;
+extern crate bindgen;
 
 fn main() {
     let mut build = cc::Build::new();
 
     let languages_dir = "languages";
-    let supported_languages = ["tree-sitter-python", "tree-sitter-javascript"];
+    let languages = fs::read_dir(languages_dir).unwrap();
 
-    for lang in supported_languages.iter() {
-        let folder = [languages_dir, lang, "src"].iter().collect::<PathBuf>();
+    for l in languages {
+        let lang = l.unwrap().path();
+        if !lang.is_dir() {
+            continue;
+        }
+
+        let folder = lang.join("src");
 
         build.include(&folder);
-        build.file(folder.join("parser.c"));
+
+        if folder.join("parser.c").exists() {
+            build.file(folder.join("parser.c"));
+        }
 
         if folder.join("scanner.cc").exists() {
             build.file(folder.join("scanner.cc"));
@@ -18,5 +27,5 @@ fn main() {
             build.file(folder.join("scanner.c"));
         }
     }
-    build.compile("mybrother");
+    build.compile("ts_grammars");
 }
