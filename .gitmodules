@@ -1,0 +1,129 @@
+[submodule "languages/tree-sitter-javascript"]
+	path = languages/tree-sitter-javascript
+	url = https://github.com/tree-sitter/tree-sitter-javascript
+[submodule "languages/tree-sitter-bash"]
+	path = languages/tree-sitter-bash
+	url = https://github.com/tree-sitter/tree-sitter-bash
+[submodule "languages/tree-sitter-c"]
+	path = languages/tree-sitter-c
+	url = https://github.com/tree-sitter/tree-sitter-c
+[submodule "languages/tree-sitter-c-sharp"]
+	path = languages/tree-sitter-c-sharp
+	url = https://github.com/tree-sitter/tree-sitter-c-sharp
+[submodule "languages/tree-sitter-cpp"]
+	path = languages/tree-sitter-cpp
+	url = https://github.com/tree-sitter/tree-sitter-cpp
+[submodule "languages/tree-sitter-commonlisp"]
+	path = languages/tree-sitter-commonlisp
+	url = https://github.com/theHamsta/tree-sitter-commonlisp
+[submodule "languages/tree-sitter-css"]
+	path = languages/tree-sitter-css
+	url = https://github.com/tree-sitter/tree-sitter-css
+[submodule "languages/tree-sitter-cuda"]
+	path = languages/tree-sitter-cuda
+	url = https://github.com/theHamsta/tree-sitter-cuda
+[submodule "languages/tree-sitter-d"]
+	path = languages/tree-sitter-d
+	url = https://github.com/gdamore/tree-sitter-d
+[submodule "languages/tree-sitter-dot"]
+	path = languages/tree-sitter-dot
+	url = https://github.com/rydesun/tree-sitter-dot
+[submodule "languages/tree-sitter-elm"]
+	path = languages/tree-sitter-elm
+	url = https://github.com/elm-tooling/tree-sitter-elm
+[submodule "languages/tree-sitter-elisp"]
+	path = languages/tree-sitter-elisp
+	url = https://github.com/Wilfred/tree-sitter-elisp
+[submodule "languages/tree-sitter-embedded-template"]
+	path = languages/tree-sitter-embedded-template
+	url = https://github.com/tree-sitter/tree-sitter-embedded-template
+[submodule "languages/tree-sitter-erlang"]
+	path = languages/tree-sitter-erlang
+	url = https://github.com/WhatsApp/tree-sitter-erlang/
+[submodule "languages/tree-sitter-fennel"]
+	path = languages/tree-sitter-fennel
+	url = https://github.com/travonted/tree-sitter-fennel
+[submodule "languages/tree-sitter-glsl"]
+	path = languages/tree-sitter-glsl
+	url = https://github.com/theHamsta/tree-sitter-glsl
+[submodule "languages/tree-sitter-go"]
+	path = languages/tree-sitter-go
+	url = https://github.com/tree-sitter/tree-sitter-go
+[submodule "languages/tree-sitter-hcl"]
+	path = languages/tree-sitter-hcl
+	url = https://github.com/MichaHoffmann/tree-sitter-hcl
+[submodule "languages/tree-sitter-html"]
+	path = languages/tree-sitter-html
+	url = https://github.com/tree-sitter/tree-sitter-html
+[submodule "languages/tree-sitter-java"]
+	path = languages/tree-sitter-java
+	url = https://github.com/tree-sitter/tree-sitter-java
+[submodule "languages/tree-sitter-json"]
+	path = languages/tree-sitter-json
+	url = https://github.com/tree-sitter/tree-sitter-json
+[submodule "languages/tree-sitter-lua"]
+	path = languages/tree-sitter-lua
+	url = https://github.com/Azganoth/tree-sitter-lua
+[submodule "languages/tree-sitter-make"]
+	path = languages/tree-sitter-make
+	url = https://github.com/alemuller/tree-sitter-make
+[submodule "languages/tree-sitter-markdown"]
+	path = languages/tree-sitter-markdown
+	url = https://github.com/ikatyang/tree-sitter-markdown
+[submodule "languages/tree-sitter-ocaml"]
+	path = languages/tree-sitter-ocaml
+	url = https://github.com/tree-sitter/tree-sitter-ocaml
+[submodule "languages/tree-sitter-php"]
+	path = languages/tree-sitter-php
+	url = https://github.com/tree-sitter/tree-sitter-php
+[submodule "languages/tree-sitter-python"]
+	path = languages/tree-sitter-python
+	url = https://github.com/tree-sitter/tree-sitter-python
+[submodule "languages/tree-sitter-ruby"]
+	path = languages/tree-sitter-ruby
+	url = https://github.com/tree-sitter/tree-sitter-ruby
+[submodule "languages/tree-sitter-rust"]
+	path = languages/tree-sitter-rust
+	url = https://github.com/tree-sitter/tree-sitter-rust
+[submodule "languages/tree-sitter-r"]
+	path = languages/tree-sitter-r
+	url = https://github.com/r-lib/tree-sitter-r
+[submodule "languages/tree-sitter-sexp"]
+	path = languages/tree-sitter-sexp
+	url = https://github.com/AbstractMachinesLab/tree-sitter-sexp
+[submodule "languages/tree-sitter-sparql"]
+	path = languages/tree-sitter-sparql
+	url = https://github.com/BonaBeavis/tree-sitter-sparql
+[submodule "languages/tree-sitter-svelte"]
+	path = languages/tree-sitter-svelte
+	url = https://github.com/Himujjal/tree-sitter-svelte
+[submodule "languages/tree-sitter-systemrdl"]
+	path = languages/tree-sitter-systemrdl
+	url = https://github.com/SystemRDL/tree-sitter-systemrdl
+[submodule "languages/tree-sitter-toml"]
+	path = languages/tree-sitter-toml
+	url = https://github.com/ikatyang/tree-sitter-toml
+[submodule "languages/tree-sitter-turtle"]
+	path = languages/tree-sitter-turtle
+	url = https://github.com/BonaBeavis/tree-sitter-turtle
+[submodule "languages/tree-sitter-twig"]
+	path = languages/tree-sitter-twig
+	url = https://github.com/gbprod/tree-sitter-twig
+[submodule "languages/tree-sitter-typescript"]
+	path = languages/tree-sitter-typescript
+	url = https://github.com/tree-sitter/tree-sitter-typescript
+[submodule "languages/tree-sitter-verilog"]
+	path = languages/tree-sitter-verilog
+	url = https://github.com/tree-sitter/tree-sitter-verilog
+[submodule "languages/tree-sitter-vue"]
+	path = languages/tree-sitter-vue
+	url = https://github.com/ikatyang/tree-sitter-vue
+[submodule "languages/tree-sitter-vhdl"]
+	path = languages/tree-sitter-vhdl
+	url = https://github.com/alemuller/tree-sitter-vhdl
+[submodule "languages/tree-sitter-yaml"]
+	path = languages/tree-sitter-yaml
+	url = https://github.com/ikatyang/tree-sitter-yaml
+[submodule "languages/tree-sitter-wasm"]
+	path = languages/tree-sitter-wasm
+	url = https://github.com/wasm-lsp/tree-sitter-wasm
